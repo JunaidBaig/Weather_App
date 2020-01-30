@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather forecast</title>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        $(document).ready(function() {
+            $('#submitButton').click(function() {
+                var cityName = $('#cityName').val();
+                var apiCall = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=76174e3a1b3f4e500bd24da08f8ceb94';
+                console.log(apiCall);
+                $.get(apiCall, function(data) {
+                    console.log(data);
+                    $('.city').html(data.name, ",", data.sys.country);
+                    for (var i = 0; i < data.weather.length; i++) {
+                        $('.weather').html(data.weather[i].description);
+
+                    }
+                    $('.temp').html("Temperature : " + Math.floor(((data.main.temp - 273.15) * (9 / 5)) + 32), "˚F , " + "Max Temperature : " + Math.floor(((data.main.temp_max - 273) * (9 / 5)) + 32) + "˚F , Min Temperature : " + Math.floor(((data.main.temp - 273) * (9 / 5)) + 32), "˚F , ");
+                    $('.wind').html("Wind " + data.wind.speed + " m/s");
+                    $('.clouds').html("Clouds " + data.clouds.all + "%");
+                    $('.pressure').html(data.main.pressure, " hpa");
+                    $('.humidity').html("Humidity : " + data.main.humidity + " %");
+                })
+            })
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-dark bg-dark justify-content-between">
+            <span class="navbar-brand mb-0 h1">Weather Forecast App</span>
+        </nav>
+        <div class="jumbotron">
+            <p class="lead">
+                <label for="cityName">Enter City Name</label>
+                <input type="text" id="cityName" placeholder="Enter City Name here">
+                <button id="submitButton">Submit</button>
+            </p>
+            <div class="weather-app">
+                <p class="city" style="display: inline-block;"></p>
+                <p class="weather" style="font-style: italic; display: inline-block;"></p>
+                <p class="temp"></p>
+                <p class="temp-max"></p>
+                <p class="temp-min"></p>
+                <p class="wind"></p>
+                <p class="clouds"></p>
+                <p class="pressure"></p>
+                <p class="humidity"></p>
+            </div>
+        </div>
+        <nav class="navbar navbar-dark bg-dark justify-content-between">
+            <span class="navbar-brand mb-0 h1">Thank You</span>
+        </nav>
+    </div>
+
+</body>
+
+</html>
